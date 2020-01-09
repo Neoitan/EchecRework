@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/pTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Titre du popup"
+        android:textSize="30dp"
+        />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/pIVWin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/vide"
+            />
+
+        <TextView
+            android:id="@+id/pSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sous-titre de popup"
+            android:textSize="15dp"
+            />
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/pReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Re-jouer ?"
+        />
+
+</LinearLayout>
