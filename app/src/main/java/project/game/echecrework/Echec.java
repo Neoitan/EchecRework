@@ -48,6 +48,7 @@ class Echec {
         this.xKB = 7;
         this.yKB = 4;
 
+        /* Pieces noires */
         this.plateau[0][0] = "NR";
         this.plateau[0][1] = "NH";
         this.plateau[0][2] = "NB";
@@ -66,7 +67,7 @@ class Echec {
         this.plateau[1][6] = "NP";
         this.plateau[1][7] = "NP";
 
-
+        /* Pieces blanches */
         this.plateau[7][0] = "BR";
         this.plateau[7][1] = "BH";
         this.plateau[7][2] = "BB";
@@ -104,7 +105,6 @@ class Echec {
                         * déplacement de 2 si position = 1 / 6
                         * déplacement de 1 sinon
                         * déplacement de diagonal si pion à attraper
-                        *
                         *
                         * */
                         if(
@@ -153,7 +153,9 @@ class Echec {
                     break;
                 /* KING */
                 case 'K':
-                    if( Math.abs(x - x1) <= 1|| Math.abs(y - y1) <= 1 ){
+                    if( (Math.abs(x - x1) <= 1 && Math.abs(y - y1) <= 1) &&
+                        (((x!=x1) && (Math.abs(x - x1))<=1) ||((y!=y1) && (Math.abs(y - y1))<=1))
+                    ){
                         deplacement = true;
                     }
                     break;
