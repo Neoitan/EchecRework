@@ -41,14 +41,6 @@ class Echec {
             }
         }
 
-
-        this.xKN = 0;
-        this.yKN = 4;
-
-        this.xKB = 7;
-        this.yKB = 4;
-
-
         /* Pieces noires */
         this.plateau[0][0] = "NR";
         this.plateau[0][1] = "NH";
@@ -158,7 +150,6 @@ class Echec {
                 case 'K':
                     if( (Math.abs(x - x1) <= 1 && Math.abs(y - y1) <= 1) &&
                         (((x!=x1) && (Math.abs(x - x1))<=1) ||((y!=y1) && (Math.abs(y - y1))<=1))
-
                     ){
                         deplacement = true;
                     }
