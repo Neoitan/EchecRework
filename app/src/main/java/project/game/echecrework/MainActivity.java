@@ -197,8 +197,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     // Fonction de remise à zero du plateau
     public void reset(){
         this.nbTurn = 1;
-        this.board.initPlateau();
-        majGame();
+        this.board.reset();
+        this.majGame();
     }
 
     // Vérification de la situation d'échec et échec et mat grâce à la fonction de la classe Echec
@@ -206,8 +206,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
         if(this.board.complete()){
             final CustomPopup customPopup = new CustomPopup(this);
             customPopup.setTitle("Fin de partie !");
-            customPopup.setImageWin(R.drawable.b_pawn);
-            customPopup.setSubTitle("Le joueur " + "X" + " à gagné !");
+
+            if ( this.board.getWinner() == 'N' )
+                customPopup.setImageWin(R.drawable.n_pawn);
+            else
+                customPopup.setImageWin(R.drawable.b_pawn);
+
+            customPopup.setSubTitle("Le joueur " + this.board.getWinner() + " à gagné !");
             customPopup.getResetButton().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
