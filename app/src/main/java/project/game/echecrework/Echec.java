@@ -17,11 +17,10 @@ class Echec {
     // 2 -> N
     private int whoPlay = 1;
 
-    // déclaration du plateau
+    // dÃ©claration du plateau
     private String[][] plateau;
 
-    // Sauvegarder la position des rois
-    int xKB, xKN, yKB, yKN;
+    boolean kJB = true, kJN = true;
 
     // Constructeur
     public Echec(){
@@ -30,8 +29,8 @@ class Echec {
         Log.i("Affichage_board", toString());
     }
 
-    // Initialise le plateau avec les pièces au bonne coordonnées.
-    // Une case qui n'a pas de pièce est représenté par un "V." qui est une image vide.
+    // Initialise le plateau avec les piÃ¨ces au bonne coordonnÃ©es.
+    // Une case qui n'a pas de piÃ¨ce est reprÃ©sentÃ© par un "V." qui est une image vide.
     public void initPlateau(){
         this.isPlaying = true;
         this.whoPlay = 1;
@@ -42,11 +41,13 @@ class Echec {
             }
         }
 
+
         this.xKN = 0;
         this.yKN = 4;
 
         this.xKB = 7;
         this.yKB = 4;
+
 
         /* Pieces noires */
         this.plateau[0][0] = "NR";
@@ -87,8 +88,8 @@ class Echec {
         this.plateau[6][7] = "BP";
     }
 
-    // Fonction de déplacement
-    // Les vérifications y sont comprisent.
+    // Fonction de dÃ©placement
+    // Les vÃ©rifications y sont comprisent.
     public boolean move(int x, int y, int x1, int y1){
 
         String token = getCase(x, y);
@@ -96,17 +97,19 @@ class Echec {
 
         if((x == x1 && y == y1) || ( getCase(x, y).charAt(0) == getCase(x1, y1).charAt(0) ) || getCase(x, y).charAt(0) != this.getPlayer().charAt(0) ) {
         }else
-        /* REGLE DEPLACEMENT */
+            /* REGLE DEPLACEMENT */
             switch(token.charAt(1)){
                 /* PAWN */
                 case 'P':
                     if(token.charAt(0) == 'N' ){
                         /*
+
                         * déplacement de 2 si position = 1 / 6
                         * déplacement de 1 sinon
                         * déplacement de diagonal si pion à attraper
                         *
                         * */
+
                         if(
                                 x<7 &&
                                         ( (y == y1) && x == (x1 - 1) && getCase(x1, y1).charAt(0)=='V' ) ||
@@ -155,76 +158,75 @@ class Echec {
                 case 'K':
                     if( (Math.abs(x - x1) <= 1 && Math.abs(y - y1) <= 1) &&
                         (((x!=x1) && (Math.abs(x - x1))<=1) ||((y!=y1) && (Math.abs(y - y1))<=1))
+
                     ){
                         deplacement = true;
                     }
                     break;
             }
 
-            boolean temp = true;
+        boolean temp = true;
 
 
 
-            if( deplacement ){
-                //Verification que la pièce déplacée de saute pas d'autres pièces
-                //Verticaux et Horizontaux
-                if(y==y1){
-                    if(x > x1)
-                        for(int i=x-1; i>x1; i--) {
-                            if (!getCase(i, y).equals("V.")) deplacement = false;
-                        }
-                    else
-                        for( int i=x+1; i<x1; i++) {
-                            if (!getCase(i, y).equals("V.")) deplacement = false;
-                        }
-                }
-                else if(x == x1){
-                    if(y > y1)
-                        for(int i=y-1; i>y1; i--) {
-                            if (!getCase(x, i).equals("V.")) deplacement = false;
-                        }
-                    else
-                        for( int i=y+1; i<y1; i++) {
-                            if (!getCase(x, i).equals("V.")) deplacement = false;
-                        }
-                }
-                //Diagonales
-                if( x<x1 && y<y1 ){
-                    for( int i=x+1, j=y+1; i<x1; i++, j++){
-                        if (!getCase(i, j).equals("V.")) deplacement = false; Log.i("Test", "1");
+        if( deplacement ){
+            //Verification que la piÃ¨ce dÃ©placÃ©e de saute pas d'autres piÃ¨ces
+            //Verticaux et Horizontaux
+            if(y==y1){
+                if(x > x1)
+                    for(int i=x-1; i>x1; i--) {
+                        if (!getCase(i, y).equals("V.")) deplacement = false;
                     }
-                }
-                else if( x<x1 && y>y1 ){
-                    for( int i=x+1, j=y-1; i<x1; i++, j--){
-                        if (!getCase(i, j).equals("V.")) deplacement = false; Log.i("Test", "2");
+                else
+                    for( int i=x+1; i<x1; i++) {
+                        if (!getCase(i, y).equals("V.")) deplacement = false;
                     }
-                }
-                else if( x>x1 && y<y1 ){
-                    for( int i=x-1, j=y+1; i>x1; i--, j++){
-                        if (!getCase(i, j).equals("V.")) deplacement = false; Log.i("Test", "3");
+            }
+            else if(x == x1){
+                if(y > y1)
+                    for(int i=y-1; i>y1; i--) {
+                        if (!getCase(x, i).equals("V.")) deplacement = false;
                     }
-                }
-                else if( x>x1 && y>y1 ){
-                    for( int i=x-1, j=y-1; i>x1; i--, j--){
-                        if (!getCase(i, j).equals("V.")) deplacement = false; Log.i("Test", "4");
+                else
+                    for( int i=y+1; i<y1; i++) {
+                        if (!getCase(x, i).equals("V.")) deplacement = false;
                     }
-                }
-
-                // Si le déplacement est correct on l'effectue.
-                if(deplacement) {
-                    if(getCase(x, y).equals("NK")){
-                        this.xKN = x1;
-                        this.yKN = y1;
-                    }
-                    else if(getCase(x, y).equals("BK")){
-                        this.xKB = x1;
-                        this.yKB = y1;
-                    }
-                    this.plateau[x1][y1] = this.plateau[x][y];
-                    this.plateau[x][y] = "V.";
+            }
+            //Diagonales
+            if( x<x1 && y<y1 ){
+                for( int i=x+1, j=y+1; i<x1; i++, j++){
+                    if (!getCase(i, j).equals("V.")) deplacement = false;
                 }
             }
-            return deplacement;
+            else if( x<x1 && y>y1 ){
+                for( int i=x+1, j=y-1; i<x1; i++, j--){
+                    if (!getCase(i, j).equals("V.")) deplacement = false;
+                }
+            }
+            else if( x>x1 && y<y1 ){
+                for( int i=x-1, j=y+1; i>x1; i--, j++){
+                    if (!getCase(i, j).equals("V.")) deplacement = false;
+                }
+            }
+            else if( x>x1 && y>y1 ){
+                for( int i=x-1, j=y-1; i>x1; i--, j--){
+                    if (!getCase(i, j).equals("V.")) deplacement = false;
+                }
+            }
+
+            // Si le dÃ©placement est correct on l'effectue.
+            if(deplacement) {
+                if(getCase(x1, y1).equals("NK")){
+                    this.kJN = false;
+                }
+                else if(getCase(x, y).equals("BK")){
+                    this.kJB = false;
+                }
+                this.plateau[x1][y1] = this.plateau[x][y];
+                this.plateau[x][y] = "V.";
+            }
+        }
+        return deplacement;
     }
 
     //Affichage en mode console.
@@ -245,41 +247,49 @@ class Echec {
         return s;
     }
 
-    // Passe le tour d'un joueur à l'autre.
+    // Passe le tour d'un joueur Ã  l'autre.
     public void changePlayer(){
         if (this.whoPlay == 1) this.whoPlay += 1; else this.whoPlay -= 1;
     }
 
-    // Récupère le joueur qui joue actuellement.
+    // RÃ©cupÃ¨re le joueur qui joue actuellement.
     public String getPlayer(){
         if(this.whoPlay == 1) return "Blanc"; else return "Noir";
     }
 
-    // Récupère la valeur d'une case.
-    // La valeur étant la pièce (ou non) qui l'occupe.
+    // RÃ©cupÃ¨re la valeur d'une case.
+    // La valeur Ã©tant la piÃ¨ce (ou non) qui l'occupe.
     public String getCase(int x, int y) {
         return this.plateau[x][y];
     }
 
-    // Vérification de la situation d'échec et échec et mat
+    public char getWinner(){
+        if( !this.kJB ){
+            return 'N';
+        }
+        else return 'B';
+    }
+
+    // VÃ©rification de la situation d'Ã©chec et Ã©chec et mat
     public boolean complete() {
 
-        /*for(int i = 0; i < this.TAILLEX; i++){
-            for(int j = 0; j < this.TAILLEX; j++) {
-                switch(getCase(i, j)){
-                    case "BP":
+        this.kJN = false;
+        this.kJB = false;
 
-                        break;
-
-                }
+        for(int i=0; i < this.TAILLEX; i++){
+            for(int k=0; k < this.TAILLEY; k++) {
+                if( this.plateau[i][k] == "NK" ) this.kJN = true;
+                if( this.plateau[i][k] == "BK" ) this.kJB = true;
             }
-        }*/
-
-        if( getCase( this.xKB-1, this.yKB-1 ).equals("NB") ){
-            isPlaying = !isPlaying;
         }
 
-        //if( this.plateau[5][0].equals("BP") ) isPlaying = false;
+        if( !this.kJB || !this.kJN ) this.isPlaying = false;
+
         return !isPlaying;
+    }
+
+    public void reset(){
+        this.initPlateau();
+        this.isPlaying = true;
     }
 }
