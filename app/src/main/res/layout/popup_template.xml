@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:text="Titre du popup"
         android:textSize="30dp"
+        android:textColor="@color/black"
         />
 
     <LinearLayout
@@ -31,6 +32,8 @@
             android:layout_height="wrap_content"
             android:text="Sous-titre de popup"
             android:textSize="15dp"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
             />
     </LinearLayout>
 

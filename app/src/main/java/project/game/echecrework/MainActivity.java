@@ -207,12 +207,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
             final CustomPopup customPopup = new CustomPopup(this);
             customPopup.setTitle("Fin de partie !");
 
-            if ( this.board.getWinner() == 'N' )
+            if ( this.board.getWinner() == 'N' ) {
                 customPopup.setImageWin(R.drawable.n_pawn);
-            else
+                customPopup.setSubTitle("Le joueur NOIR à gagné !");
+            }
+            else {
                 customPopup.setImageWin(R.drawable.b_pawn);
 
-            customPopup.setSubTitle("Le joueur " + this.board.getWinner() + " à gagné !");
+                customPopup.setSubTitle("Le joueur BLANC à gagné !");
+            }
+
             customPopup.getResetButton().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
