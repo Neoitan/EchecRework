@@ -95,11 +95,13 @@ class Echec {
                 case 'P':
                     if(token.charAt(0) == 'N' ){
                         /*
-                         * dÃ©placement de 2 si position = 1 / 6
-                         * dÃ©placement de 1 sinon
-                         * dÃ©placement de diagonal si pion Ã  attraper
-                         *
-                         * */
+
+                        * déplacement de 2 si position = 1 / 6
+                        * déplacement de 1 sinon
+                        * déplacement de diagonal si pion à attraper
+                        *
+                        * */
+
                         if(
                                 x<7 &&
                                         ( (y == y1) && x == (x1 - 1) && getCase(x1, y1).charAt(0)=='V' ) ||
@@ -147,7 +149,7 @@ class Echec {
                 /* KING */
                 case 'K':
                     if( (Math.abs(x - x1) <= 1 && Math.abs(y - y1) <= 1) &&
-                            (((x!=x1) && (Math.abs(x - x1))<=1) ||((y!=y1) && (Math.abs(y - y1))<=1))
+                        (((x!=x1) && (Math.abs(x - x1))<=1) ||((y!=y1) && (Math.abs(y - y1))<=1))
                     ){
                         deplacement = true;
                     }
