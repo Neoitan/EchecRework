@@ -105,7 +105,7 @@ class Echec {
                         if(
                                 x<7 &&
                                         ( (y == y1) && x == (x1 - 1) && getCase(x1, y1).charAt(0)=='V' ) ||
-                                        ( (x == 1) && (y == y1) && ( x == (x1 - 2) ) ) ||
+                                        ( (x == 1) && (y == y1) && ( x == (x1 - 2) ) && getCase(x1, y1).charAt(0)=='V') ||
                                         ( (x == (x1 - 1)) && (Math.abs(y - y1) == 1) && getCase(x1, y1).charAt(0)!='V' )
 
 

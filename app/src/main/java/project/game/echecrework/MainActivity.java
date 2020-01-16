@@ -204,28 +204,28 @@ public class MainActivity extends Activity implements View.OnClickListener {
     // Vérification de la situation d'échec et échec et mat grâce à la fonction de la classe Echec
     public void verif(){
         if(this.board.complete()){
-            final CustomPopup customPopup = new CustomPopup(this);
-            customPopup.setTitle("Fin de partie !");
+            final PopupVictoire popupVictoire = new PopupVictoire(this);
+            popupVictoire.setTitle("Fin de partie !");
 
             if ( this.board.getWinner() == 'N' ) {
-                customPopup.setImageWin(R.drawable.n_pawn);
-                customPopup.setSubTitle("Le joueur NOIR à gagné !");
+                popupVictoire.setImageWin(R.drawable.n_pawn);
+                popupVictoire.setSubTitle("Le joueur NOIR à gagné !");
             }
             else {
-                customPopup.setImageWin(R.drawable.b_pawn);
+                popupVictoire.setImageWin(R.drawable.b_pawn);
 
-                customPopup.setSubTitle("Le joueur BLANC à gagné !");
+                popupVictoire.setSubTitle("Le joueur BLANC à gagné !");
             }
 
-            customPopup.getResetButton().setOnClickListener(new View.OnClickListener() {
+            popupVictoire.getResetButton().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getApplicationContext(), "Nouvelle partie ...", Toast.LENGTH_LONG);
-                    customPopup.dismiss();
+                    popupVictoire.dismiss();
                     reset();
                 }
             });
-            customPopup.build();
+            popupVictoire.build();
         }
     }
 }
