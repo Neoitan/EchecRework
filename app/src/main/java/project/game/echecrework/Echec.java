@@ -1,3 +1,10 @@
+/*
+* Henry Florien - Antoine Levasseur
+* Class Echec
+* Classe métier comprennant les méthodes du jeu
+* */
+
+
 package project.game.echecrework;
 
 import android.util.Log;
@@ -50,8 +57,7 @@ class Echec {
         this.plateau[0][4] = "NK";
         this.plateau[0][5] = "NB";
         this.plateau[0][6] = "NH";
-        //this.plateau[0][7] = "NR";
-        this.plateau[0][7] = "V.";
+        this.plateau[0][7] = "NR";
 
         this.plateau[1][0] = "NP";
         this.plateau[1][1] = "NP";
@@ -60,8 +66,7 @@ class Echec {
         this.plateau[1][4] = "NP";
         this.plateau[1][5] = "NP";
         this.plateau[1][6] = "NP";
-        //this.plateau[1][7] = "NP";
-        this.plateau[1][7] = "BP";
+        this.plateau[1][7] = "NP";
 
         /* Pieces blanches */
         this.plateau[7][0] = "BR";
@@ -71,8 +76,7 @@ class Echec {
         this.plateau[7][4] = "BK";
         this.plateau[7][5] = "BB";
         this.plateau[7][6] = "BH";
-        //this.plateau[7][7] = "BR";
-        this.plateau[7][7] = "V.";
+        this.plateau[7][7] = "BR";
 
         this.plateau[6][0] = "BP";
         this.plateau[6][1] = "BP";
@@ -81,8 +85,7 @@ class Echec {
         this.plateau[6][4] = "BP";
         this.plateau[6][5] = "BP";
         this.plateau[6][6] = "BP";
-        this.plateau[6][7] = "NP";
-        //this.plateau[6][7] = "BP";
+        this.plateau[6][7] = "BP";
     }
 
     // Fonction de dÃ©placement
