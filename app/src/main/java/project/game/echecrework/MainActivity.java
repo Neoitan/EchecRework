@@ -1,9 +1,16 @@
+/*
+ * Henry Florian - Antoine Levasseur
+ *
+ * Class MainActivity
+ * Classe Affichage du métier
+ *
+ * */
+
 package project.game.echecrework;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -14,20 +21,19 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
+    int[] tokens = {-1, -1, -1, -1};
+    // Lien avec la classe métier
     private Echec board;
-
-    private ImageButton IDBoard[][];
     private int idButton;
-
-    private Button bReset;
+    // Image boutton du tableau affiché.
+    private ImageButton[][] IDBoard;
     private TextView tvPlayer;
 
-    private int nbTurn = 1;
 
     /*SAVE PLAY*/
-
-    int tokens[] = {-1, -1, -1, -1};
-
+    // IHM en dessous du l'échiquier.
+    private Button bReset;
+    // Variable définissant le début d'un déplacement
     private boolean firstTouch = true;
 
     @Override
@@ -36,25 +42,29 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        // Lien avec la classe métier
         this.board = new Echec();
+
+        // lien de l'IHM
         this.bReset = findViewById(R.id.bReset);
         this.bReset.setOnClickListener(this);
-
         this.tvPlayer = findViewById(R.id.tvPlayer);
 
-        initBoard();
+        // Initialisation de l'échiquier affiché en fonction de la classe métier.
+        this.initBoard();
     }
 
+    // Initialisation de l'échiquier
     private void initBoard() {
         this.IDBoard = new ImageButton[8][8];
         this.idButton = 0;
         /*CREATION DU LAYOUT*/
 
-        final TableLayout tableLayout = (TableLayout) findViewById(R.id.TLBoard);
+        final TableLayout tableLayout = findViewById(R.id.TLBoard);
         tableLayout.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
 
         /* CREATION DE LA ROW */
-        for(int i=0; i < 8; i++){
+        for(int i = 0; i < 8; i++){
             final TableRow tableRow = new TableRow(this);
             tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
 
@@ -62,8 +72,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             for (int k = 0; k < 8; k++) {
                 // Creation  button
                 final ImageButton button = new ImageButton(this);
-
-                Log.i("CHECK", "Check image" + this.idButton);
 
                 button.setLayoutParams(new TableRow.LayoutParams(115, 115));
                 button.setId(this.idButton++);
@@ -81,9 +89,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         majGame();
     }
 
-    // Mise à jour du plateau
+    // Mise à jour du plateau selon les pièce récupérées du plateau de la classe métier.
     private void majButton() {
-        for(int i=0; i < 8; i++) {
+        for(int i = 0; i < 8; i++) {
             for (int k = 0; k < 8; k++) {
                 ImageButton button = this.IDBoard[i][k];
                 switch (board.getCase(i, k)) {
@@ -137,10 +145,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     /* POUR RECUPERER LES COORD X ET Y DEPUIS L'ID DE LA LISTE*/
     private int[] searchIndex(int id){
-        for( int i = 0; i < 8; i++){
-            for( int k = 0; k < 8; k++) {
+        for(int i = 0; i < 8; i++){
+            for(int k = 0; k < 8; k++) {
                 if (this.IDBoard[i][k].getId() == id){
-                    int tabId[] = {i, k};
+                    int[] tabId = {i, k};
                     return tabId;
                 }
             }
@@ -152,24 +160,26 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
+        // La variable tolen correcponds au coordonnées des deux cases du tableaux étant
+        // sélectionnées par le joueur.
+
+        // On la réinitialise à chaque fois avec des valeurs "-1".
+
         if(v == this.bReset) reset();
         else {
-            Log.i("COORD", v.getId()+"\n"+searchIndex(v.getId())[0]+"-"+searchIndex(v.getId())[1] + "\n" + this.board.getCase(searchIndex(v.getId())[0], searchIndex(v.getId())[1]));
             if(this.firstTouch && !this.board.getCase(searchIndex(v.getId())[0], searchIndex(v.getId())[1]).equals("V.")) {
 
-                    this.tokens[0] = searchIndex(v.getId())[0];
-                    this.tokens[1] = searchIndex(v.getId())[1];
-                    this.firstTouch = false;
+                this.tokens[0] = searchIndex(v.getId())[0];
+                this.tokens[1] = searchIndex(v.getId())[1];
+                this.firstTouch = false;
 
-            }
-            else if(!this.firstTouch){
+            } else if(!this.firstTouch){
                 this.tokens[2] = searchIndex(v.getId())[0];
                 this.tokens[3] = searchIndex(v.getId())[1];
                 this.firstTouch = true;
 
                 if( board.move(tokens[0], tokens[1], tokens[2], tokens[3]) ) {
                     this.board.changePlayer();
-                    this.nbTurn++;
                 }
                 this.tokens[0] = -1;
                 this.tokens[1] = -1;
@@ -179,6 +189,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         }
 
+        // Mise à jour de l'affichage
         majGame();
     }
 
@@ -196,11 +207,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     // Fonction de remise à zero du plateau
     public void reset(){
-        this.nbTurn = 1;
         this.board.reset();
         this.majGame();
     }
 
+    // Envoie à la classe métier quelle pièce doit être promue.
     public void makePromotion(int[] idCase, String idPromo){
         this.board.makePromotion(idCase, idPromo);
     }
@@ -211,11 +222,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
             final PopupVictoire popupVictoire = new PopupVictoire(this);
             popupVictoire.setTitle("Fin de partie !");
 
+            // Vérifie la victoire et lance un popup dans le cas échéant.
             if ( this.board.getWinner() == 'N' ) {
                 popupVictoire.setImageWin(R.drawable.n_pawn);
                 popupVictoire.setSubTitle("Le joueur NOIR à gagné !");
-            }
-            else {
+            } else {
                 popupVictoire.setImageWin(R.drawable.b_pawn);
 
                 popupVictoire.setSubTitle("Le joueur BLANC à gagné !");
@@ -232,6 +243,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             popupVictoire.build();
         }
 
+        // Vérifie la promotion d'une pièce blanche et lance un popup dans le cas échéant.
         else if( this.board.checkPromotion()[0] == 1 ){
             final int[] temp = this.board.checkPromotion();
 
@@ -277,7 +289,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             popupPromotion.build();
         }
 
-
+        // Vérifie la promotion d'une pièce noire et lance un popup dans le cas échéant.
         else if( this.board.checkPromotion()[0] == 2 ){
             final int[] temp = this.board.checkPromotion();
 

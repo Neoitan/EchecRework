@@ -1,3 +1,12 @@
+/*
+ * Henry Florian - Antoine Levasseur
+ *
+ * Class PopupVictoire
+ * Utilisés dans le cas de la victoire d'un joueur.
+ * Classe de Popup personnalisé pour permettre d'avoir un Layout personnalisé également.
+ *
+ * */
+
 package project.game.echecrework;
 
 import android.app.Activity;
@@ -28,7 +37,9 @@ public class PopupVictoire extends Dialog {
     }
 
     public void setTitle(String title){ this.pTitle = title; }
+
     public void setSubTitle(String subTitle){ this.pSubTitle = subTitle; }
+
     public void setImageWin(int resId){ this.drawable = resId; }
 
     public Button getResetButton(){ return this.pReset; }

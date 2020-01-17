@@ -1,14 +1,21 @@
 /*
-* Henry Florien - Antoine Levasseur
+ * Henry Florian - Antoine Levasseur
+ *
 * Class Echec
-* Classe métier comprennant les méthodes du jeu
+ * Classe métier comprennant les méthodes du jeu.
+ *
+ *       INDEX
+ *
+ * R -> Rook   (Tour    )
+ * H -> Horse  (Cavalier)
+ * B -> Bishop (Fou     )
+ * C -> Crown  (Reine   )
+ * K -> King   (Roi     )
+ * P -> Pawn   (Pion    )
+ *
 * */
 
-
 package project.game.echecrework;
-
-import android.util.Log;
-import android.view.View;
 
 class Echec {
 
@@ -21,34 +28,39 @@ class Echec {
 
     private boolean isPlaying = true;
 
-    // 1 -> B
-    // 2 -> N
-    private int whoPlay = 1;
-
-    // dÃ©claration du plateau
-    private String[][] plateau;
-
+    // Variable pour savoir si les deux rois sont encore sur le plateau.
+    // Dans le cas contraire la partie se termine.
     boolean kJB = true, kJN = true;
+    // 1 -> Joueur Blanc
+    // 2 -> Joueur Noir
+    private int whoPlay = 1;
+    // déclaration du plateau
+    private String[][] plateau;
 
     // Constructeur
     public Echec(){
+        // Initialise le plateau
         this.plateau = new String[TAILLEX][TAILLEY];
-        initPlateau();
-        Log.i("Affichage_board", toString());
+        this.initPlateau();
     }
 
-    // Initialise le plateau avec les piÃ¨ces au bonne coordonnÃ©es.
-    // Une case qui n'a pas de piÃ¨ce est reprÃ©sentÃ© par un "V." qui est une image vide.
+    // Initialise le plateau avec les pièces aux bonnes coordonnées.
+    // Une case qui n'a pas de pièce est représenté par un "V." qui est une image vide.
     public void initPlateau(){
+        // Le jeu commence.
         this.isPlaying = true;
+
+        // Tel que le jeu originel, les blanc commence.
         this.whoPlay = 1;
 
+        // Initialisation du plateau avec des cases vides
         for(int i=0; i < this.TAILLEX; i++){
             for(int k=0; k < this.TAILLEY; k++) {
                 this.plateau[i][k] = "V.";
             }
         }
 
+        // On place les pièces indiviuellement.
         /* Pieces noires */
         this.plateau[0][0] = "NR";
         this.plateau[0][1] = "NH";
@@ -58,15 +70,7 @@ class Echec {
         this.plateau[0][5] = "NB";
         this.plateau[0][6] = "NH";
         this.plateau[0][7] = "NR";
-
-        this.plateau[1][0] = "NP";
-        this.plateau[1][1] = "NP";
-        this.plateau[1][2] = "NP";
-        this.plateau[1][3] = "NP";
-        this.plateau[1][4] = "NP";
-        this.plateau[1][5] = "NP";
-        this.plateau[1][6] = "NP";
-        this.plateau[1][7] = "NP";
+        for (int i = 0; i < this.TAILLEX; i++) this.plateau[1][i] = "NP";
 
         /* Pieces blanches */
         this.plateau[7][0] = "BR";
@@ -77,27 +81,27 @@ class Echec {
         this.plateau[7][5] = "BB";
         this.plateau[7][6] = "BH";
         this.plateau[7][7] = "BR";
-
-        this.plateau[6][0] = "BP";
-        this.plateau[6][1] = "BP";
-        this.plateau[6][2] = "BP";
-        this.plateau[6][3] = "BP";
-        this.plateau[6][4] = "BP";
-        this.plateau[6][5] = "BP";
-        this.plateau[6][6] = "BP";
-        this.plateau[6][7] = "BP";
+        for (int i = 0; i < this.TAILLEX; i++) this.plateau[6][i] = "BP";
     }
 
-    // Fonction de dÃ©placement
-    // Les vÃ©rifications y sont comprisent.
+    // Fonction de déplacement
+    // Les vérifications y sont comprisent.
     public boolean move(int x, int y, int x1, int y1){
 
+        // On sauvegarde la case du pion à déplacer.
         String token = getCase(x, y);
+
+        ///Avant les vérification le déplacement n'est pas autorisé.
         boolean deplacement = false;
 
+        // Le déplacement est faux si le joueur veut déplacer une pièce :
+        //      sur elle même.
+        //      Si les deux pièces sont de la même couleur
+        //      Si la case à déplacer n'appartient pas au joueur actuel;
         if((x == x1 && y == y1) || ( getCase(x, y).charAt(0) == getCase(x1, y1).charAt(0) ) || getCase(x, y).charAt(0) != this.getPlayer().charAt(0) ) {
-        }else
+        } else {
             /* REGLE DEPLACEMENT */
+            // Selon la pièce à déplacer on limite les mouvements possibles.
             switch(token.charAt(1)){
                 /* PAWN */
                 case 'P':
@@ -163,14 +167,12 @@ class Echec {
                     }
                     break;
             }
+        }
 
-        boolean temp = true;
-
-
-
+        // Malgré un déplacement correct on dooit vérifier que le joueur ne passe pas au dessus
+        // d'une autre pièce.
         if( deplacement ){
             if( getCase(x, y).charAt(1) != 'H') {
-                //Verification que la piÃ¨ce dÃ©placÃ©e de saute pas d'autres piÃ¨ces
                 //Verticaux et Horizontaux
                 if (y == y1) {
                     if (x > x1)
@@ -211,26 +213,33 @@ class Echec {
                 }
             }
 
-            // Si le dÃ©placement est correct on l'effectue.
+            // Si le déplacement est correct on l'effectue.
             if(deplacement) {
+
+                // On vérifie si l'un des deux rois n'as pas été sauté.
                 if(getCase(x1, y1).equals("NK")){
                     this.kJN = false;
                 }
                 else if(getCase(x, y).equals("BK")){
                     this.kJB = false;
                 }
+
+                // On échange les places
+                // Dans tous les cas, la place qu'occupait une pièce devient vide.
                 this.plateau[x1][y1] = this.plateau[x][y];
                 this.plateau[x][y] = "V.";
-                checkPromotion();
+
+                // On vérifie si un pion peux être promu.
+                this.checkPromotion();
             }
         }
         return deplacement;
     }
 
+    // Vérification des promotion d'un pion.
     public int[] checkPromotion() {
         int[] tabTemp = {'0', '0', '0'};
         for(int i = 0; i<this.TAILLEX; i++){
-            Log.i("check Promotion", this.plateau[0][i] );
             if( this.plateau[0][i].equals("BP") ) {
                 tabTemp[0] = 1;
                 tabTemp[1] = 0;
@@ -245,27 +254,9 @@ class Echec {
         return tabTemp;
     }
 
+    // Méthode de promition d'une pièce via la popup
     public void makePromotion(int[] idCase, String idPromo) {
-        Log.i("MAKE PROMOTION", idCase[1] + "-" + idCase[2]);
         this.plateau[idCase[1]][idCase[2]] = idPromo;
-    }
-
-    //Affichage en mode console.
-    public String toString() {
-        String s = "      1  2  3  4  5  6  7  8";
-
-
-        s += "\n     --------------------\n1   |";
-
-        for(int i=0; i < this.TAILLEX; i++){
-            for(int k=0; k < this.TAILLEY; k++){
-                s += this.plateau[i][k] + "|";
-            }
-            if(i<7) s += "\n     --------------------\n" + (i+2) + "   |";
-            else    s += "\n     --------------------\n";
-        }
-
-        return s;
     }
 
     // Passe le tour d'un joueur Ã  l'autre.
@@ -273,25 +264,25 @@ class Echec {
         if (this.whoPlay == 1) this.whoPlay += 1; else this.whoPlay -= 1;
     }
 
-    // RÃ©cupÃ¨re le joueur qui joue actuellement.
+    // RécupÃ¨re le joueur qui joue actuellement.
     public String getPlayer(){
         if(this.whoPlay == 1) return "Blanc"; else return "Noir";
     }
 
-    // RÃ©cupÃ¨re la valeur d'une case.
-    // La valeur Ã©tant la piÃ¨ce (ou non) qui l'occupe.
+    // RécupÃ¨re la valeur d'une case.
+    // La valeur étant la piÃ¨ce (ou non) qui l'occupe.
     public String getCase(int x, int y) {
         return this.plateau[x][y];
     }
 
+    //renvoie la couleur du houeur qui à encore son roi sur le plateau.
     public char getWinner(){
         if( !this.kJB ){
             return 'N';
-        }
-        else return 'B';
+        } else return 'B';
     }
 
-    // VÃ©rification de la situation d'Ã©chec et Ã©chec et mat
+    // Vérification de la situation d'échec et échec et mat
     public boolean complete() {
 
         this.kJN = false;
@@ -309,6 +300,7 @@ class Echec {
         return !isPlaying;
     }
 
+    // Méthode de remise à zéro du plateau et du boolean disant si le jeu est en cour.
     public void reset(){
         this.initPlateau();
         this.isPlaying = true;

@@ -1,12 +1,22 @@
+/*
+ * Henry Florian - Antoine Levasseur
+ *
+ * Class PopupPromotion
+ * Utilisés dans le cas de la promotion d'un pion.
+ * Classe de Popup personnalisé pour permettre d'avoir un Layout personnalisé également.
+ *
+ * */
+
 package project.game.echecrework;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class PopupPromotion extends Dialog {
+
+    // Attributs
 
     private String pTitle;
 
@@ -36,14 +46,14 @@ public class PopupPromotion extends Dialog {
 
     public void setTitle(String title){ this.pTitle = title; }
 
+    // récupère la couleurs du pion à promouvoir et donne les choix possibles en conséquence.
     public void setImagePromo(char j){
         if( j == 'N' ){
             this.drawableC = R.drawable.n_crown;
             this.drawableH = R.drawable.n_horse;
             this.drawableR = R.drawable.n_rook;
             this.drawableB = R.drawable.n_bishop;
-        }
-        else if( j == 'B' ){
+        } else if( j == 'B' ){
             this.drawableC = R.drawable.b_crown;
             this.drawableH = R.drawable.b_horse;
             this.drawableR = R.drawable.b_rook;
@@ -52,10 +62,14 @@ public class PopupPromotion extends Dialog {
     }
 
     public ImageButton getpIVC(){ return this.pIVC; }
+
     public ImageButton getpIVH(){ return this.pIVH; }
+
     public ImageButton getpIVR(){ return this.pIVR; }
+
     public ImageButton getpIVB(){ return this.pIVB; }
 
+    // Construction du popup
     public void build(){
         show();
         this.pTitleView.setText(this.pTitle);
