@@ -201,7 +201,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         this.majGame();
     }
 
-    // Vérification de la situation d'échec et échec et mat grâce à la fonction de la classe Echec
+    public void makePromotion(int[] idCase, String idPromo){
+        this.board.makePromotion(idCase, idPromo);
+    }
+
+    // Vérification de la situation de victoire grâce à la fonction de la classe Echec
     public void verif(){
         if(this.board.complete()){
             final PopupVictoire popupVictoire = new PopupVictoire(this);
@@ -226,6 +230,97 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 }
             });
             popupVictoire.build();
+        }
+
+        else if( this.board.checkPromotion()[0] == 1 ){
+            final int[] temp = this.board.checkPromotion();
+
+            final PopupPromotion popupPromotion = new PopupPromotion(this);
+            popupPromotion.setTitle("Choisissez la promotion de votre pion");
+            popupPromotion.setImagePromo('B');
+
+            popupPromotion.getpIVC().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    makePromotion(temp, "BC");
+                    popupPromotion.dismiss();
+                    majGame();
+                }
+            });
+
+            popupPromotion.getpIVH().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    makePromotion(temp, "BH");
+                    popupPromotion.dismiss();
+                    majGame();
+                }
+            });
+
+            popupPromotion.getpIVR().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    makePromotion(temp, "BR");
+                    popupPromotion.dismiss();
+                    majGame();
+                }
+            });
+
+            popupPromotion.getpIVB().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    makePromotion(temp, "BB");
+                    popupPromotion.dismiss();
+                    majGame();
+                }
+            });
+            popupPromotion.build();
+        }
+
+
+        else if( this.board.checkPromotion()[0] == 2 ){
+            final int[] temp = this.board.checkPromotion();
+
+            final PopupPromotion popupPromotion = new PopupPromotion(this);
+            popupPromotion.setTitle("Choisissez la promotion de votre pion");
+            popupPromotion.setImagePromo('N');
+
+            popupPromotion.getpIVC().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    makePromotion(temp, "NC");
+                    popupPromotion.dismiss();
+                    majGame();
+                }
+            });
+
+            popupPromotion.getpIVH().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    makePromotion(temp, "NH");
+                    popupPromotion.dismiss();
+                    majGame();
+                }
+            });
+
+            popupPromotion.getpIVR().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    makePromotion(temp, "NR");
+                    popupPromotion.dismiss();
+                    majGame();
+                }
+            });
+
+            popupPromotion.getpIVB().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    makePromotion(temp, "NB");
+                    popupPromotion.dismiss();
+                    majGame();
+                }
+            });
+            popupPromotion.build();
         }
     }
 }

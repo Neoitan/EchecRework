@@ -1,6 +1,7 @@
 package project.game.echecrework;
 
 import android.util.Log;
+import android.view.View;
 
 class Echec {
 
@@ -49,7 +50,8 @@ class Echec {
         this.plateau[0][4] = "NK";
         this.plateau[0][5] = "NB";
         this.plateau[0][6] = "NH";
-        this.plateau[0][7] = "NR";
+        //this.plateau[0][7] = "NR";
+        this.plateau[0][7] = "V.";
 
         this.plateau[1][0] = "NP";
         this.plateau[1][1] = "NP";
@@ -58,7 +60,8 @@ class Echec {
         this.plateau[1][4] = "NP";
         this.plateau[1][5] = "NP";
         this.plateau[1][6] = "NP";
-        this.plateau[1][7] = "NP";
+        //this.plateau[1][7] = "NP";
+        this.plateau[1][7] = "BP";
 
         /* Pieces blanches */
         this.plateau[7][0] = "BR";
@@ -68,7 +71,8 @@ class Echec {
         this.plateau[7][4] = "BK";
         this.plateau[7][5] = "BB";
         this.plateau[7][6] = "BH";
-        this.plateau[7][7] = "BR";
+        //this.plateau[7][7] = "BR";
+        this.plateau[7][7] = "V.";
 
         this.plateau[6][0] = "BP";
         this.plateau[6][1] = "BP";
@@ -77,7 +81,8 @@ class Echec {
         this.plateau[6][4] = "BP";
         this.plateau[6][5] = "BP";
         this.plateau[6][6] = "BP";
-        this.plateau[6][7] = "BP";
+        this.plateau[6][7] = "NP";
+        //this.plateau[6][7] = "BP";
     }
 
     // Fonction de dÃ©placement
@@ -161,47 +166,45 @@ class Echec {
 
 
         if( deplacement ){
-            //Verification que la piÃ¨ce dÃ©placÃ©e de saute pas d'autres piÃ¨ces
-            //Verticaux et Horizontaux
-            if(y==y1){
-                if(x > x1)
-                    for(int i=x-1; i>x1; i--) {
-                        if (!getCase(i, y).equals("V.")) deplacement = false;
-                    }
-                else
-                    for( int i=x+1; i<x1; i++) {
-                        if (!getCase(i, y).equals("V.")) deplacement = false;
-                    }
-            }
-            else if(x == x1){
-                if(y > y1)
-                    for(int i=y-1; i>y1; i--) {
-                        if (!getCase(x, i).equals("V.")) deplacement = false;
-                    }
-                else
-                    for( int i=y+1; i<y1; i++) {
-                        if (!getCase(x, i).equals("V.")) deplacement = false;
-                    }
-            }
-            //Diagonales
-            if( x<x1 && y<y1 ){
-                for( int i=x+1, j=y+1; i<x1; i++, j++){
-                    if (!getCase(i, j).equals("V.")) deplacement = false;
+            if( getCase(x, y).charAt(1) != 'H') {
+                //Verification que la piÃ¨ce dÃ©placÃ©e de saute pas d'autres piÃ¨ces
+                //Verticaux et Horizontaux
+                if (y == y1) {
+                    if (x > x1)
+                        for (int i = x - 1; i > x1; i--) {
+                            if (!getCase(i, y).equals("V.")) deplacement = false;
+                        }
+                    else
+                        for (int i = x + 1; i < x1; i++) {
+                            if (!getCase(i, y).equals("V.")) deplacement = false;
+                        }
+                } else if (x == x1) {
+                    if (y > y1)
+                        for (int i = y - 1; i > y1; i--) {
+                            if (!getCase(x, i).equals("V.")) deplacement = false;
+                        }
+                    else
+                        for (int i = y + 1; i < y1; i++) {
+                            if (!getCase(x, i).equals("V.")) deplacement = false;
+                        }
                 }
-            }
-            else if( x<x1 && y>y1 ){
-                for( int i=x+1, j=y-1; i<x1; i++, j--){
-                    if (!getCase(i, j).equals("V.")) deplacement = false;
-                }
-            }
-            else if( x>x1 && y<y1 ){
-                for( int i=x-1, j=y+1; i>x1; i--, j++){
-                    if (!getCase(i, j).equals("V.")) deplacement = false;
-                }
-            }
-            else if( x>x1 && y>y1 ){
-                for( int i=x-1, j=y-1; i>x1; i--, j--){
-                    if (!getCase(i, j).equals("V.")) deplacement = false;
+                //Diagonales
+                if (x < x1 && y < y1) {
+                    for (int i = x + 1, j = y + 1; i < x1; i++, j++) {
+                        if (!getCase(i, j).equals("V.")) deplacement = false;
+                    }
+                } else if (x < x1 && y > y1) {
+                    for (int i = x + 1, j = y - 1; i < x1; i++, j--) {
+                        if (!getCase(i, j).equals("V.")) deplacement = false;
+                    }
+                } else if (x > x1 && y < y1) {
+                    for (int i = x - 1, j = y + 1; i > x1; i--, j++) {
+                        if (!getCase(i, j).equals("V.")) deplacement = false;
+                    }
+                } else if (x > x1 && y > y1) {
+                    for (int i = x - 1, j = y - 1; i > x1; i--, j--) {
+                        if (!getCase(i, j).equals("V.")) deplacement = false;
+                    }
                 }
             }
 
@@ -215,9 +218,33 @@ class Echec {
                 }
                 this.plateau[x1][y1] = this.plateau[x][y];
                 this.plateau[x][y] = "V.";
+                checkPromotion();
             }
         }
         return deplacement;
+    }
+
+    public int[] checkPromotion() {
+        int[] tabTemp = {'0', '0', '0'};
+        for(int i = 0; i<this.TAILLEX; i++){
+            Log.i("check Promotion", this.plateau[0][i] );
+            if( this.plateau[0][i].equals("BP") ) {
+                tabTemp[0] = 1;
+                tabTemp[1] = 0;
+                tabTemp[2] = i;
+            }
+            if( this.plateau[this.TAILLEY-1][i].equals("NP") ) {
+                tabTemp[0] = 2;
+                tabTemp[1] = this.TAILLEY-1;
+                tabTemp[2] = i;
+            }
+        }
+        return tabTemp;
+    }
+
+    public void makePromotion(int[] idCase, String idPromo) {
+        Log.i("MAKE PROMOTION", idCase[1] + "-" + idCase[2]);
+        this.plateau[idCase[1]][idCase[2]] = idPromo;
     }
 
     //Affichage en mode console.

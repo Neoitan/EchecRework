@@ -17,7 +17,7 @@ public class PopupVictoire extends Dialog {
 
     public PopupVictoire(Activity activity ){
         super(activity, R.style.Theme_AppCompat_DayNight_Dialog);
-        setContentView(R.layout.popup_template);
+        setContentView(R.layout.popup_victoire_template);
 
         this.pTitle = "titre du popup";
         this.pSubTitle = "Sous-titre de popup";
@@ -39,5 +39,4 @@ public class PopupVictoire extends Dialog {
         this.pSubTitleView.setText(this.pSubTitle);
         this.pIVWinView.setImageResource(this.drawable);
     }
-
 }
